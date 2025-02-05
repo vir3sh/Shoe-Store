@@ -5,6 +5,7 @@ import cors from "cors";
 import myDB from "./config/myDB.js";
 import router from "./routes/productroutes.js";
 import path from "path";
+import userrouter from "./routes/userRoutes.js";
 const app = express(); // Create an instance of express
 
 app.use(express()); // Middleware to parse JSON
@@ -28,6 +29,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(path.resolve(), "uploads")));
 app.use("/api/product", router);
+app.use("/api/user", userrouter);
 
 app.get("/", (req, res) => {
   res.send("Hello, Express!");

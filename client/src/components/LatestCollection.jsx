@@ -5,6 +5,7 @@ import SingleProduct from "./SingleProduct";
 
 const LatestCollection = () => {
   const { backendUrl, products } = useContext(ShopContext);
+
   return (
     <div>
       <Title text1={"Latest"} text2={"Collections"} />

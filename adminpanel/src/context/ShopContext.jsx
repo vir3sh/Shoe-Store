@@ -34,6 +34,7 @@ export const ShopProvider = ({ children }) => {
     const formData = new FormData();
     formData.append("name", product.name);
     formData.append("description", product.description);
+    formData.append("price", product.price);
     formData.append(
       "sizes",
       JSON.stringify(product.sizes.split(",").map(Number))

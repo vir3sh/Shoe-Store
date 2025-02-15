@@ -1,6 +1,10 @@
 import React from "react";
 
 const Contact = () => {
+  const formSubmit = (e) => {
+    e.preventDefault();
+    console.log("kadamri");
+  };
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold text-center mb-8">Contact Us</h1>
@@ -71,7 +75,7 @@ const Contact = () => {
         </div>
 
         {/* Contact Form */}
-        <form className="space-y-4">
+        <form onSubmit={formSubmit} className="space-y-4">
           <div>
             <label
               htmlFor="name"

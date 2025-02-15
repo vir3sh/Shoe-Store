@@ -6,14 +6,13 @@ import myDB from "./config/myDB.js";
 import router from "./routes/productroutes.js";
 import path from "path";
 import userrouter from "./routes/userRoutes.js";
-const app = express(); // Create an instance of express
+const app = express();
 
-app.use(express()); // Middleware to parse JSON
+app.use(express());
 const corsoption = {
   origin: ["http://localhost:5173", "http://localhost:5174"], // Replace with your frontend URL
   credentials: true,
 };
-const PORT = 5000;
 
 try {
   await myDB();
@@ -32,9 +31,10 @@ app.use("/api/product", router);
 app.use("/api/user", userrouter);
 
 app.get("/", (req, res) => {
-  res.send("Hello, Express!");
+  res.send("API Working!");
 });
 
+const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

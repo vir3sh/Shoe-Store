@@ -10,10 +10,16 @@ const userrouter = express.Router();
 userrouter.post("/signup", async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ name, email, password: hashedPassword });
     await user.save();
-    res.status(201).json({ message: "User created successfully" });
+    res
+      .status(201)
+      .json({ success: true, message: "User created successfully" });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
@@ -36,7 +42,7 @@ userrouter.post("/login", async (req, res) => {
     });
 
     res.cookie("token", token, { httpOnly: true });
-    res.json({ token });
+    res.json({ success: true, token });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }

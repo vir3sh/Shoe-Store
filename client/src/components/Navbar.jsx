@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ShopContext } from "../context/ShopContext";
+
 const Navbar = () => {
+  const { getCartCount } = useContext(ShopContext);
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      const count = await getCartCount();
+      setCartCount(count);
+    };
+
+    fetchCartCount();
+  }, [getCartCount]); // Runs when getCartCount changes
+
   return (
     <div className="bg-black">
       <div className="flex justify-between mx-3 p-2 bg-black text-teal-50 py-5">
@@ -12,9 +26,15 @@ const Navbar = () => {
             <Link to={"/contact"}>CONTACT</Link>
           </ul>
         </div>
-        <div className="rounded-full bg-white text-black px-1.5 py-1 text-xl ">
-          VP
-        </div>
+        <Link
+          to="/cart"
+          className="relative  border border-white rounded-full p-1 "
+        >
+          CART{" "}
+          <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center bg-black text-white border border-white rounded-full text-[10px]">
+            {cartCount}
+          </p>
+        </Link>
       </div>
     </div>
   );

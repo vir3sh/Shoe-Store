@@ -10,6 +10,7 @@ const AdminPanel = () => {
     sizes: "",
     category: "",
     bestseller: false,
+    price: "",
     images: [],
   });
   const [selectedImages, setSelectedImages] = useState([]);
@@ -32,6 +33,7 @@ const AdminPanel = () => {
       sizes: "",
       category: "",
       bestseller: false,
+      price: "",
       images: [],
     });
     setSelectedImages([]);
@@ -43,9 +45,7 @@ const AdminPanel = () => {
         <div className="w-1/4">
           <button
             className={`w-full p-2 mb-2 ${
-              activeTab === "addProduct"
-                ? "bg-black text-white"
-                : "bg-gray-200"
+              activeTab === "addProduct" ? "bg-black text-white" : "bg-gray-200"
             }`}
             onClick={() => setActiveTab("addProduct")}
           >
@@ -100,6 +100,17 @@ const AdminPanel = () => {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
+
+              <input
+                type="text"
+                name="price"
+                value={product.price}
+                onChange={handleInputChange}
+                placeholder="price"
+                required
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+
               <input
                 type="text"
                 name="category"
@@ -165,6 +176,7 @@ const AdminPanel = () => {
                     </h3>
                     <p>Description : {product.description}</p>
                     <p>Sizes: {product.sizes.join(", ")}</p>
+                    <p>Price:{product.price}</p>
                     <p>Category: {product.category.join(", ")}</p>
                     <p>Bestseller: {product.bestseller ? "Yes" : "No"}</p>
                     <div className="flex space-x-2">

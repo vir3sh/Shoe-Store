@@ -8,8 +8,19 @@ export const ShopContext = createContext();
 export const ShopContextProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const backendUrl = "http://localhost:5000";
-  const [cartItem, setCartItem] = useState({});
+  const [cartItem, setCartItem] = useState(() => {
+    // Load cart from localStorage when the app starts
+    const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : {};
+  });
+
   const currency = "$";
+  const [loggedin, setIsLoggedIn] = useState(false);
+
+  // Save cart to localStorage whenever cartItem changes
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItem));
+  }, [cartItem]);
 
   // Add item to cart
   const addToCart = (itemId, size) => {
@@ -28,7 +39,7 @@ export const ShopContextProvider = ({ children }) => {
     }
 
     cartData[itemId][size] += 1;
-    setCartItem({ ...cartData }); // Update state
+    setCartItem(cartData); // Update state
     toast.success("Product Added To Cart");
   };
 
@@ -69,6 +80,23 @@ export const ShopContextProvider = ({ children }) => {
     return totalCount;
   };
 
+  const getCartAmount = async () => {
+    let totalAmount = 0;
+    for (const items in cartItem) {
+      let itemInfo = products.find((product) => product._id === items);
+      for (const item in cartItem[items]) {
+        try {
+          if (cartItem[items][item] > 0) {
+            totalAmount += itemInfo.price * cartItem[items][item];
+          }
+        } catch (error) {
+          toast.error(error);
+        }
+      }
+    }
+    return totalAmount;
+  };
+
   // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
@@ -86,9 +114,12 @@ export const ShopContextProvider = ({ children }) => {
     backendUrl,
     currency,
     products,
+    loggedin,
+    setIsLoggedIn,
     cartItem,
     setCartItem,
     addToCart,
+    getCartAmount,
     removeFromCart,
     deleteFromCart,
     getCartCount,

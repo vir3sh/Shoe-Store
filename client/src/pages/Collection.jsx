@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ShopContext } from "../context/ShopContext";
 import SingleProduct from "../components/SingleProduct";
-
 const Collection = () => {
   const { products } = useContext(ShopContext);
   const [selectedCategories, setSelectedCategories] = useState([]);

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { toast } from "react-toastify";
 
@@ -8,6 +8,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { backendUrl } = useContext(ShopContext);
+  const navigate = useNavigate();
+  const { setIsLoggedIn } = useContext(ShopContext);
 
   const formSubmit = async (e) => {
     e.preventDefault();
@@ -18,13 +20,16 @@ const Login = () => {
       });
 
       if (response.data.success) {
-        toast.success("Signup successful! Redirecting to home...");
+        const token = response.data.token;
+        localStorage.setItem("authToken", token); // Store token in localStorage
+        setIsLoggedIn(true);
+        toast.success("Login successful! Redirecting to home...");
         setTimeout(() => {
-          window.location.href = "/home"; // Redirect to login
+          navigate("/home"); // Redirect to home page
         }, 2000);
       }
     } catch (error) {
-      toast.error(error.response?.data?.error || "Signup failed");
+      toast.error(error.response?.data?.error || "Login failed");
     }
   };
 
@@ -63,11 +68,11 @@ const Login = () => {
             type="submit"
             className="w-full bg-black text-white p-2 rounded hover:bg-gray-800"
           >
-            login
+            Login
           </button>
         </form>
         <p className="text-center mt-3 underline">
-          <Link to="/signup"> Create a Account</Link>
+          <Link to="/signup"> Create an Account</Link>
         </p>
       </div>
     </div>

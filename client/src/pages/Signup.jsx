@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { toast } from "react-toastify";
 
@@ -9,6 +9,8 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const { backendUrl } = useContext(ShopContext);
+  const navigate = useNavigate();
+  const { setIsLoggedIn } = useContext(ShopContext);
 
   const formSubmit = async (e) => {
     e.preventDefault();
@@ -20,9 +22,12 @@ const Signup = () => {
       });
 
       if (response.data.success) {
-        toast.success("Signup successful! Redirecting to login...");
+        const token = response.data.token;
+        localStorage.setItem("authToken", token); // Store token in localStorage
+        setIsLoggedIn(true);
+        toast.success("Signup successful! Redirecting to home...");
         setTimeout(() => {
-          window.location.href = "/login"; // Redirect to login
+          navigate("/home"); // Redirect to home page
         }, 2000);
       }
     } catch (error) {

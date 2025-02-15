@@ -4,8 +4,14 @@ import Title from "../components/Title";
 import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
 
 const Cart = () => {
-  const { cartItem, products, addToCart, removeFromCart, deleteFromCart } =
-    useContext(ShopContext);
+  const {
+    cartItem,
+    products,
+    addToCart,
+    removeFromCart,
+    getCartAmount,
+    deleteFromCart,
+  } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
@@ -22,6 +28,7 @@ const Cart = () => {
       }
     }
     setCartData(tempData);
+    // console.log(getCartAmount);
   }, [cartItem]);
 
   return (
@@ -37,7 +44,7 @@ const Cart = () => {
             return (
               <div
                 key={index}
-                className="flex items-center gap-6 p-4 border rounded-lg shadow-md bg-white"
+                className="flex items-center gap-6 p-4 border  shadow-md bg-white"
               >
                 <img
                   src={
@@ -46,7 +53,7 @@ const Cart = () => {
                       : "placeholder.jpg"
                   }
                   alt={productData?.name || "Product"}
-                  className="w-24 h-24 object-cover rounded-lg"
+                  className="w-24 h-24 object-cover "
                 />
 
                 <div className="flex-1">

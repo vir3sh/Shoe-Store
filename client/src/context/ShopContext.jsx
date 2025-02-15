@@ -8,6 +8,7 @@ export const ShopContext = createContext();
 export const ShopContextProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const backendUrl = "http://localhost:5000";
+  const delivery_fee = 20;
   const [cartItem, setCartItem] = useState(() => {
     // Load cart from localStorage when the app starts
     const savedCart = localStorage.getItem("cart");
@@ -15,7 +16,7 @@ export const ShopContextProvider = ({ children }) => {
   });
 
   const currency = "$";
-  const [loggedin, setIsLoggedIn] = useState(false);
+  const [loggedin, setIsLoggedIn] = useState(null);
 
   // Save cart to localStorage whenever cartItem changes
   useEffect(() => {
@@ -80,7 +81,7 @@ export const ShopContextProvider = ({ children }) => {
     return totalCount;
   };
 
-  const getCartAmount = async () => {
+  const getCartTotal = () => {
     let totalAmount = 0;
     for (const items in cartItem) {
       let itemInfo = products.find((product) => product._id === items);
@@ -96,6 +97,11 @@ export const ShopContextProvider = ({ children }) => {
     }
     return totalAmount;
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    setIsLoggedIn(!!token); // Set true if token exists, false otherwise
+  }, []);
 
   // Fetch products
   useEffect(() => {
@@ -114,12 +120,13 @@ export const ShopContextProvider = ({ children }) => {
     backendUrl,
     currency,
     products,
+    delivery_fee,
     loggedin,
     setIsLoggedIn,
     cartItem,
     setCartItem,
     addToCart,
-    getCartAmount,
+    getCartTotal,
     removeFromCart,
     deleteFromCart,
     getCartCount,

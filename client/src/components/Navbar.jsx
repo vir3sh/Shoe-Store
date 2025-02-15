@@ -55,25 +55,20 @@ const Navbar = () => {
         </div>
 
         {/* Icons (Only if Logged In) */}
-        {loggedin === true ? (
-          <div className="flex items-center gap-4">
-            <Link to="/account" className="text-white text-xl">
-              <FaUser />
-            </Link>
-            <Link to="/cart" className="relative text-white text-xl">
-              <FaShoppingCart />
-              {cartCount > 0 && (
-                <span className="absolute right-[-5px] bottom-[-5px] w-4 text-center bg-red-500 text-white border border-white rounded-full text-[10px]">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
-          </div>
-        ) : (
-          <button className="bg-white text-black p-2 rounded-xl">
-            <Link to="/Signup">Sign-up</Link>
-          </button>
-        )}
+
+        <div className="flex items-center gap-4">
+          <Link to="/account" className="text-white text-xl">
+            <FaUser />
+          </Link>
+          <Link to="/cart" className="relative text-white text-xl">
+            <FaShoppingCart />
+            {cartCount > 0 && (
+              <span className="absolute right-[-5px] bottom-[-5px] w-4 text-center bg-red-500 text-white border border-white rounded-full text-[10px]">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+        </div>
       </div>
     </div>
   );

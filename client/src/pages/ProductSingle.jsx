@@ -69,7 +69,7 @@ const ProductSingle = () => {
                   key={index}
                   src={`http://localhost:5000/${img}`}
                   alt={`${productData.name} thumbnail ${index + 1}`}
-                  className={`w-[70%] h-[0%] object-cover rounded-lg cursor-pointer border-2 transition-all duration-200 hover:shadow-lg ${
+                  className={`w-14 h-14 object-cover rounded-lg cursor-pointer border-2 transition-all duration-200 hover:shadow-lg ${
                     mainImage === img
                       ? "border-blue-500 shadow-md"
                       : "border-transparent hover:border-blue-300"

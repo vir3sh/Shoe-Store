@@ -13,6 +13,8 @@ import Signup from "./pages/Signup";
 import Cart from "./pages/Cart";
 import { useContext } from "react";
 import { ShopContext } from "./context/ShopContext";
+import PlaceOrder from "./pages/PlaceOrder";
+import Orders from "./pages/Orders";
 
 const App = () => {
   const { loggedin } = useContext(ShopContext);
@@ -33,6 +35,8 @@ const App = () => {
         <Route element={<Contact />} path="/contact" />
         <Route element={<Login />} path="/login" />
         <Route element={<Signup />} path="/signup" />
+        <Route element={<Orders />} path="/orders" />
+        <Route element={<PlaceOrder />} path="/place-order" />
         <Route element={<ProductSingle />} path="/product/:id" />
 
         {/* Protected Routes (Require Login) */}

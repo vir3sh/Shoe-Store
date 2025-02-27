@@ -23,7 +23,7 @@ const Signup = () => {
 
       if (response.data.success) {
         const token = response.data.token;
-        localStorage.setItem("authToken", token); // Store token in localStorage
+        localStorage.setItem("token", token); // Store token in localStorage
         setIsLoggedIn(true);
         toast.success("Signup successful! Redirecting to home...");
         setTimeout(() => {

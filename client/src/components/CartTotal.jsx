@@ -2,11 +2,13 @@ import React from "react";
 import { useContext } from "react";
 import { ShopContext } from "../context/ShopContext";
 import Title from "./Title";
+import { useNavigate } from "react-router-dom";
 
 const CartTotal = () => {
   const { delivery_fee, currency, getCartTotal } = useContext(ShopContext);
   const subtotal = getCartTotal();
   const total = subtotal === 0 ? 0 : subtotal + delivery_fee;
+  const navigate = useNavigate();
 
   return (
     <div className="p-6 bg-gray-100 rounded-lg shadow-md w-full max-w-md mx-auto">
@@ -39,7 +41,10 @@ const CartTotal = () => {
       </div>
 
       {/* Checkout Button */}
-      <button className="mt-6 w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition">
+      <button
+        onClick={() => navigate("/place-order")}
+        className="mt-6 w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
+      >
         Proceed to Checkout
       </button>
     </div>

@@ -6,6 +6,10 @@ import dotenv from "dotenv";
 
 const userrouter = express.Router();
 
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET);
+};
+
 // Signup
 userrouter.post("/signup", async (req, res) => {
   try {

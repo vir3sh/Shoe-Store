@@ -6,11 +6,11 @@ import {
   ProductList,
 } from "../controllers/productController.js";
 
-const router = express.Router();
+const ProductRouter = express.Router();
 
-router.post("/add", ProductAdd);
-router.delete("/delete/:id", ProductDelete);
-router.get("/view/:id", ProductView);
-router.get("/list", ProductList);
+ProductRouter.post("/add", ProductAdd);
+ProductRouter.delete("/delete/:id", ProductDelete);
+ProductRouter.get("/view/:id", ProductView);
+ProductRouter.get("/list", ProductList);
 
-export default router;
+export default ProductRouter;

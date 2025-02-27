@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import { jwtDecode } from "jwt-decode";
 export const ShopContext = createContext();
 
 export const ShopContextProvider = ({ children }) => {
@@ -14,6 +14,7 @@ export const ShopContextProvider = ({ children }) => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : {};
   });
+  const [token, setToken] = useState("");
 
   const currency = "$";
   const [loggedin, setIsLoggedIn] = useState(null);
@@ -24,7 +25,8 @@ export const ShopContextProvider = ({ children }) => {
   }, [cartItem]);
 
   // Add item to cart
-  const addToCart = (itemId, size) => {
+
+  const addToCart = async (itemId, size) => {
     if (!size) {
       toast.error("Please Pick Size");
       return;
@@ -40,8 +42,41 @@ export const ShopContextProvider = ({ children }) => {
     }
 
     cartData[itemId][size] += 1;
-    setCartItem(cartData); // Update state
+    setCartItem(cartData);
     toast.success("Product Added To Cart");
+
+    setTimeout(async () => {
+      if (token) {
+        try {
+          // Decode token to get userId
+          const decodedToken = jwtDecode(token);
+          const userId = decodedToken?.userId; // Ensure userId exists
+
+          if (!userId) {
+            toast.error("Invalid token, userId missing.");
+            return;
+          }
+
+          console.log("Sending to backend:", { userId, itemId, size });
+
+          await axios.post(
+            backendUrl + "/api/cart/add",
+            { userId, itemId, size },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Send token in headers
+              },
+              withCredentials: true,
+            }
+          );
+        } catch (error) {
+          console.log("Error in addToCart:", error);
+        }
+      } else {
+        toast.error("Login please");
+      }
+    }, 100);
   };
 
   // Remove one quantity from cart
@@ -99,8 +134,9 @@ export const ShopContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem("token");
     setIsLoggedIn(!!token); // Set true if token exists, false otherwise
+    setToken(token);
   }, []);
 
   // Fetch products
@@ -130,6 +166,8 @@ export const ShopContextProvider = ({ children }) => {
     removeFromCart,
     deleteFromCart,
     getCartCount,
+    token,
+    setToken,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;

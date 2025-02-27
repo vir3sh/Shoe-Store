@@ -67,21 +67,21 @@ const Cart = () => {
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <button
+                    {/* <button
                       className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full"
                       onClick={() => removeFromCart(item._id, item.size)}
                     >
                       <FaMinus className="text-gray-700" />
-                    </button>
+                    </button> */}
                     <span className="text-lg font-semibold">
                       {item.quantity}
                     </span>
-                    <button
+                    {/* <button
                       className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full"
                       onClick={() => addToCart(item._id, item.size)}
                     >
                       <FaPlus className="text-gray-700" />
-                    </button>
+                    </button> */}
                   </div>
 
                   <button

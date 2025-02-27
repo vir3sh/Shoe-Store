@@ -57,7 +57,7 @@ export const ShopContextProvider = ({ children }) => {
             return;
           }
 
-          console.log("Sending to backend:", { userId, itemId, size });
+          // console.log("Sending to backend:", { userId, itemId, size });
 
           await axios.post(
             backendUrl + "/api/cart/add",
@@ -98,12 +98,6 @@ export const ShopContextProvider = ({ children }) => {
   };
 
   // Remove entire item from cart
-  const deleteFromCart = (itemId) => {
-    const cartData = { ...cartItem };
-    delete cartData[itemId]; // Remove the product from the cart
-    setCartItem({ ...cartData });
-    toast.info("Product Removed from Cart");
-  };
 
   // Get total cart count
   const getCartCount = () => {
@@ -131,6 +125,56 @@ export const ShopContextProvider = ({ children }) => {
       }
     }
     return totalAmount;
+  };
+
+  const deleteFromCart = async (itemId, size) => {
+    const cartData = { ...cartItem };
+
+    // ✅ Check if the item exists
+    if (cartData[itemId]) {
+      // ✅ Remove only the specific size
+      delete cartData[itemId][size];
+
+      // ✅ If no sizes remain, delete the entire item
+      if (Object.keys(cartData[itemId]).length === 0) {
+        delete cartData[itemId];
+      }
+
+      // ✅ Update local cart state
+      setCartItem({ ...cartData });
+      toast.info("Product Removed from Cart");
+    } else {
+      toast.error("Item not found in cart.");
+      return;
+    }
+
+    if (token) {
+      try {
+        // Decode token to get userId
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken?.userId;
+
+        if (!userId) {
+          toast.error("Invalid token, userId missing.");
+          return;
+        }
+
+        // ✅ Send DELETE request to backend
+        await axios.delete(`${backendUrl}/api/cart/delete`, {
+          data: { userId, itemId, size }, // ✅ Send correct payload
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+      } catch (error) {
+        console.log("Error in deleteFromCart:", error);
+        toast.error("Failed to remove item from cart.");
+      }
+    } else {
+      toast.error("Please log in to modify your cart.");
+    }
   };
 
   useEffect(() => {

@@ -21,7 +21,7 @@ const Login = () => {
 
       if (response.data.success) {
         const token = response.data.token;
-        localStorage.setItem("token", token); // Store token in localStorage
+        sessionStorage.setItem("token", token); // Store token in sessionStorage
         setIsLoggedIn(true);
         toast.success("Login successful! Redirecting to home...");
         setTimeout(() => {

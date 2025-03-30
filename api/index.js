@@ -7,6 +7,7 @@ import path from "path";
 import userrouter from "./routes/userRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
 import ProductRouter from "./routes/productRoutes.js";
+import orderRouter from "./routes/orderRoute.js";
 const app = express();
 
 app.use(express());
@@ -31,6 +32,7 @@ app.use("/uploads", express.static(path.join(path.resolve(), "uploads")));
 app.use("/api/product", ProductRouter);
 app.use("/api/user", userrouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working!");

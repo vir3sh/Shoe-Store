@@ -10,8 +10,8 @@ export const ShopContextProvider = ({ children }) => {
   const backendUrl = "http://localhost:5000";
   const delivery_fee = 20;
   const [cartItem, setCartItem] = useState(() => {
-    // Load cart from localStorage when the app starts
-    const savedCart = localStorage.getItem("cart");
+    // Load cart from sessionStorage when the app starts
+    const savedCart = sessionStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : {};
   });
   const [token, setToken] = useState("");
@@ -19,13 +19,12 @@ export const ShopContextProvider = ({ children }) => {
   const currency = "$";
   const [loggedin, setIsLoggedIn] = useState(null);
 
-  // Save cart to localStorage whenever cartItem changes
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItem));
+    sessionStorage.setItem("cart", JSON.stringify(cartItem));
+    // console.log(cartItem);
   }, [cartItem]);
 
   // Add item to cart
-
   const addToCart = async (itemId, size) => {
     if (!size) {
       toast.error("Please Pick Size");
@@ -96,8 +95,6 @@ export const ShopContextProvider = ({ children }) => {
 
     setCartItem({ ...cartData });
   };
-
-  // Remove entire item from cart
 
   // Get total cart count
   const getCartCount = () => {
@@ -178,7 +175,7 @@ export const ShopContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     setIsLoggedIn(!!token); // Set true if token exists, false otherwise
     setToken(token);
   }, []);

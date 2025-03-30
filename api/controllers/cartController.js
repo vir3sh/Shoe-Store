@@ -6,11 +6,6 @@ export const addToCart = async (req, res) => {
   try {
     const { userId, itemId, size } = req.body;
 
-    // 🛠 Debugging: Check if userId and itemId are received correctly
-    console.log("Received userId:", userId);
-    console.log("Received itemId:", itemId);
-    console.log("Received size:", size);
-
     // Validate required fields
     if (!userId || !itemId || !size) {
       return res

@@ -6,7 +6,7 @@ export const ShopContext = createContext();
 
 export const ShopProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  const [token, setToken] = useState(sessionStorage.getItem("token") || null);
 
   useEffect(() => {
     if (token) {
@@ -83,7 +83,7 @@ export const ShopProvider = ({ children }) => {
       );
       const { token } = response.data;
       setToken(token);
-      localStorage.setItem("token", token);
+      sessionStorage.setItem("token", token);
     } catch (error) {
       console.error("Error logging in:", error);
     }
@@ -92,7 +92,7 @@ export const ShopProvider = ({ children }) => {
   const logout = () => {
     setToken(null);
 
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
   };
 
   return (

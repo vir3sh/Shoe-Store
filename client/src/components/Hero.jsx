@@ -10,7 +10,7 @@ const Hero = () => {
             Adidas Shoes
           </h1>
           <p className="text-2xl font-medium tracking-wide">Shoes for men</p>
-          <p className="text-4xl font-bold">$555</p>
+          <p className="text-4xl font-bold">$485</p>
           <p className="text-xl font-light tracking-wide">
             Stylish and comfortable
           </p>

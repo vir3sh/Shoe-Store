@@ -4,7 +4,7 @@ import { ShopContext } from "../context/ShopContext";
 import { FaUser, FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 
 const Navbar = () => {
-  const { getCartCount, loggedin } = useContext(ShopContext);
+  const { getCartCount } = useContext(ShopContext);
   const [cartCount, setCartCount] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -17,32 +17,59 @@ const Navbar = () => {
   }, [getCartCount]);
 
   return (
-    <div className="bg-black">
-      <div className="flex justify-between items-center mx-3 p-2 bg-black text-teal-50 py-5">
-        {/* Logo */}
-        <div className="logo text-xl font-bold">LOGO</div>
+    <>
+      <nav className="bg-black text-white shadow-md fixed top-0 left-0 w-full z-50">
+        <div className="container mx-auto flex justify-between items-center px-5 py-4">
+          {/* Logo */}
+          <Link to="/" className="text-2xl font-bold">
+            LOGO
+          </Link>
 
-        {/* Hamburger Menu for Mobile */}
-        <div className="md:hidden">
-          {menuOpen ? (
-            <FaTimes
-              className="text-white text-2xl"
-              onClick={() => setMenuOpen(false)}
-            />
-          ) : (
-            <FaBars
-              className="text-white text-2xl"
-              onClick={() => setMenuOpen(true)}
-            />
-          )}
+          {/* Desktop Navigation & Icons */}
+          <div className="hidden md:flex items-center gap-8 text-lg">
+            <Link to="/home" className="hover:text-gray-400">
+              HOME
+            </Link>
+            <Link to="/collection" className="hover:text-gray-400">
+              COLLECTION
+            </Link>
+            <Link to="/contact" className="hover:text-gray-400">
+              CONTACT
+            </Link>
+            <Link to="/account" className="text-xl hover:text-gray-400">
+              <FaUser />
+            </Link>
+            <Link to="/cart" className="relative text-xl hover:text-gray-400">
+              <FaShoppingCart />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-2xl"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <FaTimes /> : <FaBars />}
+          </button>
         </div>
 
-        {/* Navigation Links */}
+        {/* Mobile Menu */}
         <div
-          className={`absolute md:static top-16 left-0 w-full md:w-auto bg-black md:bg-transparent flex flex-col md:flex-row gap-5 text-xl p-5 md:p-0 transition-all duration-300 ${
-            menuOpen ? "block" : "hidden md:flex"
+          className={`fixed top-0 left-0 h-screen w-full bg-black text-white flex flex-col items-center justify-center gap-6 text-xl transition-transform duration-300 ease-in-out md:hidden ${
+            menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
+          <button
+            className="absolute top-5 right-5 text-2xl"
+            onClick={() => setMenuOpen(false)}
+          >
+            <FaTimes />
+          </button>
           <Link to="/home" onClick={() => setMenuOpen(false)}>
             HOME
           </Link>
@@ -52,25 +79,29 @@ const Navbar = () => {
           <Link to="/contact" onClick={() => setMenuOpen(false)}>
             CONTACT
           </Link>
-        </div>
-
-        {/* Icons (Only if Logged In) */}
-
-        <div className="flex items-center gap-4">
-          <Link to="/account" className="text-white text-xl">
+          <Link
+            to="/account"
+            className="text-xl hover:text-gray-400"
+            onClick={() => setMenuOpen(false)}
+          >
             <FaUser />
           </Link>
-          <Link to="/cart" className="relative text-white text-xl">
+          <Link
+            to="/cart"
+            className="relative text-xl hover:text-gray-400"
+            onClick={() => setMenuOpen(false)}
+          >
             <FaShoppingCart />
             {cartCount > 0 && (
-              <span className="absolute right-[-5px] bottom-[-5px] w-4 text-center bg-red-500 text-white border border-white rounded-full text-[10px]">
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
                 {cartCount}
               </span>
             )}
           </Link>
         </div>
-      </div>
-    </div>
+      </nav>
+      <div className="mt-20"></div>
+    </>
   );
 };
 

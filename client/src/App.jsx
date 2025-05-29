@@ -26,7 +26,7 @@ const App = () => {
   return (
     <div>
       <ToastContainer />
-      <Navbar />
+      <Navbar  />
 
       <Routes>
         {/* Public Routes */}
